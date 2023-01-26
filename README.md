@@ -14,3 +14,21 @@ This way we will always get the latest value from the ADC.
 6. Set the Regular channel sequence length in ADC_SQR1
 7. Set the Respective GPIO PINs in the Analog Mode
 
+
+
+####  Enable ADC and GPIO clock 
+
+> I am using multiple channels for ADC1 in this tutorial. To be precise, I am going to use channel 1 and channel 4.
+
+Channel is is connected to the PA1 and channel 4 is connected to PA4
+
+So I would need to enable the GPIOA clock here.
+
+Enable clocks
+
+```
+RCC->APB2ENR |= (1<<8);  // enable ADC1 clock
+RCC->AHB1ENR |= (1<<0);  // enable GPIOA clock
+```
+
+
