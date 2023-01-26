@@ -143,7 +143,7 @@ ADC1->SQR3 |= (18<<10);  // SEQ3 for CHannel 18
 ```
 📌 Above I have used the examples of 3 channels, just to show how it’s done. the third channel is just for the demonstration purpose.
 
-#### Set the Respective GPIO PINs in the Analog Mode
+#### 👉Set the Respective GPIO PINs in the Analog Mode
 
 > it’s time to configure the Pins. To use the ADC, we must set the Pins in the Analog mode.
 
@@ -156,4 +156,20 @@ ADC1->SQR3 |= (18<<10);  // SEQ3 for CHannel 18
 ```
 GPIOA->MODER |= (3<<2);  // analog mode for PA 1
 GPIOA->MODER |= (3<<8);  // analog mode for PA 4
+```
+
+#### 👉Enable the ADC
+
+> Once the ADC configuration is complete, we will enable the ADC. This is important to enable it in the end because we can not configure certain things while the ADC is enabled.
+
+We will again modify the Control Register 2 for this
+
+![Screenshot](images/ENABLE.png)
+
+📌 The 0th Bit of CR2 enabled the ADC. So we will set this bit.
+```
+ADC1->CR2 |= 1<<0;   // ADON =1 enable ADC1
+	
+uint32_t delay = 10000;
+while (delay--);
 ```
