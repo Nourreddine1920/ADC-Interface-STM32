@@ -31,4 +31,15 @@ RCC->APB2ENR |= (1<<8);  // enable ADC1 clock
 RCC->AHB1ENR |= (1<<0);  // enable GPIOA clock
 ```
 
+#### Set the prescalar in the Common Control Register (CCR)
+
+> In this case, the ADC1 is connected to the APB2 Peripheral clock, which is running at it’s maximum speed of 90 MHz
+
+We will use the prescalar to bring the ADC1 clock down.
+
+The Prescalar selection can be done in the CCR Register. The important point to note here is that we can only choose amongst the predefined Prescalar values. This is shown in the figure below
+
+![Screenshot](images/CCR.png)
+
+
 
