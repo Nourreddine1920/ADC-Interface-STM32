@@ -74,7 +74,7 @@ ADC1->CR1 &= ~(1<<24);   // 12 bit RES
 - DMA specifies whether we want to use DMA for ADC.
 - Data Alignment specifies whether the 12 bit data should be Right Aligned or Left Aligned in a 16 bit Register.
 
-![Screenshot](images/CR1.png)
+![Screenshot](images/CR2.png)
 
 ```
 //4. Set the Continuous Conversion, EOC, and Data Alignment in Control Reg 2 (CR2)
