@@ -112,5 +112,34 @@ I am going to choose the 3 cycles from here
 ADC1->SMPR2 &= ~((7<<3) | (7<<12));  // Sampling time of 3 cycles for channel 1 and channel 4
 ```
 
+#### Set the Regular channel sequence length 
 
+> Now we will set the number of channels that we are concerting. This can be done in the ADC Sequence Register 1 (ADC_SQR1) .
+the regular channel sequence length is an important parameter that can be configured to optimize the performance of the ADC peripheral and to adapt it to the specific requirements of the application.
+
+
+![Screenshot](images/SQR1.png)
+
+
+- Here L can be used to set the number of channels. As you can see in the picture above, we can set the number of channels between 1 to 16. A single ADC is capable of converting 16 channels at once.
+
+- Since we are converting 2 channels, we would write 1 in the 20th position.
+```
+ADC1->SQR1 |= (2<<20);   // SQR1_L =2 for 3 conversions
+```
+
+> We also need to set the sequence for the conversion. Like which channel will be converted first, which will be converted second, and so on. There are 3 sequence registers, and based on how many channels you want to convert, you can use these registers.
+
+Here we are converting 2 channels only, so we will need to configure the sequence register 3
+
+![Screenshot](images/SQR3.png)
+
+> The first 2 sequences, SEQ1 and SEQ2, will be set for the channel 1 and channel 4 respectively. To do this all we have to do is, write the channel number to the respective sequence.
+```
+// Channel Sequence
+ADC1->SQR3 |= (1<<0);  // SEQ1 for Channel 1
+ADC1->SQR3 |= (4<<5);  // SEQ2 for CHannel 4
+ADC1->SQR3 |= (18<<10);  // SEQ3 for CHannel 18
+```
+Above I have used the examples of 3 channels, just to show how it’s done. the third channel is just for the demonstration purpose.
 
