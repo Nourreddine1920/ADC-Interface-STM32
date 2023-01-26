@@ -65,8 +65,33 @@ ADC->CCR |= 2<<16;  		 // PCLK2 divide by 6.... ADC_CLK = 90/6 = 15MHz
 ADC1->CR1 = (1<<8);    // SCAN mode enabled
 ADC1->CR1 &= ~(1<<24);   // 12 bit RES
 ```
+#### Set the Continuous Conversion, EOC, DMA and Data Alignment in Control Reg 2 (CR2)
 
+> We have to modify the Control Register 2 in order to set all the things mentioned here.
 
+- Continuous Conversion specifies whether we want to convert the ADC values continuously, or should it stop after one conversion only.
+- EOC is End Of Conversion specifies whether the EOC Flag should set after each conversion, or at the end of all the conversions.
+- DMA specifies whether we want to use DMA for ADC.
+- Data Alignment specifies whether the 12 bit data should be Right Aligned or Left Aligned in a 16 bit Register.
+
+![Screenshot](images/CR1.png)
+
+```
+//4. Set the Continuous Conversion, EOC, and Data Alignment in Control Reg 2 (CR2)
+ADC1->CR2 = (1<<1);     // enable continuous conversion mode
+ADC1->CR2 |= (1<<10);    // EOC after each conversion
+ADC1->CR2 &= ~(1<<11);   // Data Alignment RIGHT
+// Enable DMA for ADC
+ADC1->CR2 |= (1<<8);
+// Enable Continuous Request
+ADC1->CR2 |= (1<<9);
+```
+
+1. Here I am choosing the Continuous Mode, so that the conversion would not stop.
+2. EOC will be set after each conversion
+3. Data Alignment will be to the right
+4. Enable the DMA mode, as we will be using DMA in this tutorial
+5. The DMA requests will be continuous, and they will only disable, if the DMA itself is disabled
 
 
 
