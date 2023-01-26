@@ -173,3 +173,18 @@ ADC1->CR2 |= 1<<0;   // ADON =1 enable ADC1
 uint32_t delay = 10000;
 while (delay--);
 ```
+
+#### 👉Start the ADC
+
+> After setting everything, ADC, DMA etc, we will start the ADC to start the conversion of the selected channels.
+
+📌 This will again require to modify the Control Register 2.
+
+📌 As shown in the picture above, the 30th Bit of the CR2 is the SWSTART Bit. This Bit starts the conversion of the Regular Channels.
+We have to also make sure that the status Register is reset, or else the conversion will not start.
+```
+ADC1->SR = 0;        // clear the status register
+	
+ADC1->CR2 |= (1<<30);  // start the conversion
+```
+
