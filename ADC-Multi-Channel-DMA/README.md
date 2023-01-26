@@ -39,7 +39,7 @@ RCC->AHB1ENR |= (1<<0);  // enable GPIOA clock
 
 The Prescalar selection can be done in the CCR Register. The important point to note here is that we can only choose amongst the predefined Prescalar values. This is shown in the figure below
 
-![Screenshot](images/CCR.png)
+![Screenshot](ADC-Multi-Channel-DMA/images/CCR.png)
 
 ```
 //2. Set the prescalar in the Common Control Register (CCR)	
@@ -56,7 +56,7 @@ ADC->CCR |= 2<<16;  		 // PCLK2 divide by 6.... ADC_CLK = 90/6 = 15MHz
 1. Scan mode must be set, if you are using more than 1 channel for the ADC.
 2. Resolution defines the Resolution of the ADC. In STM32F4, this can vary between 6-Bit, 8-Bit, 10-Bit or 12-Bit.
 
-![Screenshot](images/CR1.png)
+![Screenshot](ADC-Multi-Channel-DMA/images/CR1.png)
 
 > Here choosing the Resolution of 12 bit means, the ADC values will vary between 0 to 4095.
 
@@ -74,7 +74,7 @@ ADC1->CR1 &= ~(1<<24);   // 12 bit RES
 - DMA specifies whether we want to use DMA for ADC.
 - Data Alignment specifies whether the 12 bit data should be Right Aligned or Left Aligned in a 16 bit Register.
 
-![Screenshot](images/CR2.png)
+![Screenshot](ADC-Multi-Channel-DMA/images/CR2.png)
 
 ```
 //4. Set the Continuous Conversion, EOC, and Data Alignment in Control Reg 2 (CR2)
@@ -99,7 +99,7 @@ ADC1->CR2 |= (1<<9);
 > Each channel can be set with a different sampling time/Frequency. This can be controlled in the ADC sample time register
 
 
-![Screenshot](images/SMPR2.png)
+![Screenshot](ADC-Multi-Channel-DMA/images/SMPR2.png)
 
 
 - There are 2 sample Registers SMPR1 and SMPR2. Since I am using channel 1 and channel 4, I have to use SMPR2.
@@ -118,7 +118,7 @@ ADC1->SMPR2 &= ~((7<<3) | (7<<12));  // Sampling time of 3 cycles for channel 1 
 the regular channel sequence length is an important parameter that can be configured to optimize the performance of the ADC peripheral and to adapt it to the specific requirements of the application.
 
 
-![Screenshot](images/SQR1.png)
+![Screenshot](ADC-Multi-Channel-DMA/images/SQR1.png)
 
 
 - Here L can be used to set the number of channels. As you can see in the picture above, we can set the number of channels between 1 to 16. A single ADC is capable of converting 16 channels at once.
@@ -132,7 +132,7 @@ ADC1->SQR1 |= (2<<20);   // SQR1_L =2 for 3 conversions
 
 Here we are converting 2 channels only, so we will need to configure the sequence register 3
 
-![Screenshot](images/SQR3.png)
+![Screenshot](ADC-Multi-Channel-DMA/images/SQR3.png)
 
 > The first 2 sequences, SEQ1 and SEQ2, will be set for the channel 1 and channel 4 respectively. To do this all we have to do is, write the channel number to the respective sequence.
 ```
@@ -149,7 +149,7 @@ ADC1->SQR3 |= (18<<10);  // SEQ3 for CHannel 18
 
 📌 We have to go to the GPIO Registers now.
 
-![Screenshot](images/GPIO.png)
+![Screenshot](ADC-Multi-Channel-DMA/images/GPIO.png)
 
 
 📌 GPIO Mode Register can be used to modify the Pin Modes. Here we need to set the Analog mode to the Pins PA1 and PA4, and that’s why we will modify the MODER1 (Bits 2 and 3) and MODER4 (Bits 8 and 9).
