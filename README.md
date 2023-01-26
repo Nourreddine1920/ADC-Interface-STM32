@@ -94,4 +94,23 @@ ADC1->CR2 |= (1<<9);
 5. The DMA requests will be continuous, and they will only disable, if the DMA itself is disabled
 
 
+#### Set the Sampling Time for the channels
+
+> Each channel can be set with a different sampling time/Frequency. This can be controlled in the ADC sample time register
+
+
+![Screenshot](images/SMPR2.png)
+
+
+- There are 2 sample Registers SMPR1 and SMPR2. Since I am using channel 1 and channel 4, I have to use SMPR2.
+
+- For this demonstration, we don’t need any specific timing for the ADC, and that’s why we can choose any sampling cycle from above.
+
+I am going to choose the 3 cycles from here
+
+```
+ADC1->SMPR2 &= ~((7<<3) | (7<<12));  // Sampling time of 3 cycles for channel 1 and channel 4
+```
+
+
 
