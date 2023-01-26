@@ -1,10 +1,10 @@
-## ADC INTERFACE USING STM32 WITH REGISTERS WITH DMA 
+## ADC INTERFACE USING STM32 WITH REGISTERS WITH DMA 💁
 
-ADC interface with DMA with STM32 using registers .
+📌 ADC interface with DMA with STM32 using registers .
 - I am choosing ADC for this tutorial because the conversion of these values will take place in the background, without affecting the CPU, and whenever we need the ADC value for some processing, we can just take it from the buffer.
 This way we will always get the latest value from the ADC.
 
-### STEPS TO FOLLOW 
+### 👉STEPS TO FOLLOW 
 
 1. Enable ADC and GPIO clock
 2. Set the prescalar in the Common Control Register (CCR)
@@ -16,13 +16,13 @@ This way we will always get the latest value from the ADC.
 
 
 
-####  Enable ADC and GPIO clock 
+####  👉Enable ADC and GPIO clock 
 
 > I am using multiple channels for ADC1 in this tutorial. To be precise, I am going to use channel 1 and channel 4.
 
 Channel is is connected to the PA1 and channel 4 is connected to PA4
 
-So I would need to enable the GPIOA clock here.
+📌 So I would need to enable the GPIOA clock here.
 
 Enable clocks
 
@@ -31,11 +31,11 @@ RCC->APB2ENR |= (1<<8);  // enable ADC1 clock
 RCC->AHB1ENR |= (1<<0);  // enable GPIOA clock
 ```
 
-#### Set the prescalar in the Common Control Register (CCR)
+#### 👉Set the prescalar in the Common Control Register (CCR)
 
 > In this case, the ADC1 is connected to the APB2 Peripheral clock, which is running at it’s maximum speed of 90 MHz
 
-We will use the prescalar to bring the ADC1 clock down.
+📌 We will use the prescalar to bring the ADC1 clock down.
 
 The Prescalar selection can be done in the CCR Register. The important point to note here is that we can only choose amongst the predefined Prescalar values. This is shown in the figure below
 
@@ -49,7 +49,7 @@ ADC->CCR |= 2<<16;  		 // PCLK2 divide by 6.... ADC_CLK = 90/6 = 15MHz
 - Here I have used the presclalar of 6, so the ADC clock = 90/6 = 15 MHz.
 
 
-#### Set the Scan Mode and Resolution in the Control Register 1 (CR1) 
+#### 👉Set the Scan Mode and Resolution in the Control Register 1 (CR1) 
 
 > Now we will modify the Control Register 1 (CR1). Here we will set up the scan mode and the Resolution for the ADC1.
 
@@ -65,7 +65,7 @@ ADC->CCR |= 2<<16;  		 // PCLK2 divide by 6.... ADC_CLK = 90/6 = 15MHz
 ADC1->CR1 = (1<<8);    // SCAN mode enabled
 ADC1->CR1 &= ~(1<<24);   // 12 bit RES
 ```
-#### Set the Continuous Conversion, EOC, DMA and Data Alignment in Control Reg 2 (CR2)
+#### 👉Set the Continuous Conversion, EOC, DMA and Data Alignment in Control Reg 2 (CR2)
 
 > We have to modify the Control Register 2 in order to set all the things mentioned here.
 
@@ -94,7 +94,7 @@ ADC1->CR2 |= (1<<9);
 5. The DMA requests will be continuous, and they will only disable, if the DMA itself is disabled
 
 
-#### Set the Sampling Time for the channels
+#### 👉Set the Sampling Time for the channels
 
 > Each channel can be set with a different sampling time/Frequency. This can be controlled in the ADC sample time register
 
@@ -106,13 +106,13 @@ ADC1->CR2 |= (1<<9);
 
 - For this demonstration, we don’t need any specific timing for the ADC, and that’s why we can choose any sampling cycle from above.
 
-I am going to choose the 3 cycles from here
+📌 I am going to choose the 3 cycles from here
 
 ```
 ADC1->SMPR2 &= ~((7<<3) | (7<<12));  // Sampling time of 3 cycles for channel 1 and channel 4
 ```
 
-#### Set the Regular channel sequence length 
+#### 👉Set the Regular channel sequence length 
 
 > Now we will set the number of channels that we are concerting. This can be done in the ADC Sequence Register 1 (ADC_SQR1) .
 the regular channel sequence length is an important parameter that can be configured to optimize the performance of the ADC peripheral and to adapt it to the specific requirements of the application.
@@ -141,5 +141,5 @@ ADC1->SQR3 |= (1<<0);  // SEQ1 for Channel 1
 ADC1->SQR3 |= (4<<5);  // SEQ2 for CHannel 4
 ADC1->SQR3 |= (18<<10);  // SEQ3 for CHannel 18
 ```
-Above I have used the examples of 3 channels, just to show how it’s done. the third channel is just for the demonstration purpose.
+📌 Above I have used the examples of 3 channels, just to show how it’s done. the third channel is just for the demonstration purpose.
 
