@@ -41,5 +41,14 @@ The Prescalar selection can be done in the CCR Register. The important point to 
 
 ![Screenshot](images/CCR.png)
 
+```
+//2. Set the prescalar in the Common Control Register (CCR)	
+ADC->CCR |= 2<<16;  		 // PCLK2 divide by 6.... ADC_CLK = 90/6 = 15MHz
+```
+
+- Here I have used the presclalar of 6, so the ADC clock = 90/6 = 15 MHz.
+
+
+
 
 
