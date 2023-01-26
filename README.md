@@ -49,6 +49,24 @@ ADC->CCR |= 2<<16;  		 // PCLK2 divide by 6.... ADC_CLK = 90/6 = 15MHz
 - Here I have used the presclalar of 6, so the ADC clock = 90/6 = 15 MHz.
 
 
+#### Set the Scan Mode and Resolution in the Control Register 1 (CR1) 
+
+> Now we will modify the Control Register 1 (CR1). Here we will set up the scan mode and the Resolution for the ADC1.
+
+1. Scan mode must be set, if you are using more than 1 channel for the ADC.
+2. Resolution defines the Resolution of the ADC. In STM32F4, this can vary between 6-Bit, 8-Bit, 10-Bit or 12-Bit.
+
+![Screenshot](images/CR1.png)
+
+> Here choosing the Resolution of 12 bit means, the ADC values will vary between 0 to 4095.
+
+```
+//3. Set the Scan Mode and Resolution in the Control Register 1 (CR1)	
+ADC1->CR1 = (1<<8);    // SCAN mode enabled
+ADC1->CR1 &= ~(1<<24);   // 12 bit RES
+```
+
+
 
 
 
