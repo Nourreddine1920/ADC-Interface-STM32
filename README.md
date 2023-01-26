@@ -143,3 +143,17 @@ ADC1->SQR3 |= (18<<10);  // SEQ3 for CHannel 18
 ```
 📌 Above I have used the examples of 3 channels, just to show how it’s done. the third channel is just for the demonstration purpose.
 
+#### Set the Respective GPIO PINs in the Analog Mode
+
+> it’s time to configure the Pins. To use the ADC, we must set the Pins in the Analog mode.
+
+📌 We have to go to the GPIO Registers now.
+
+![Screenshot](images/GPIO.png)
+
+
+📌 GPIO Mode Register can be used to modify the Pin Modes. Here we need to set the Analog mode to the Pins PA1 and PA4, and that’s why we will modify the MODER1 (Bits 2 and 3) and MODER4 (Bits 8 and 9).
+```
+GPIOA->MODER |= (3<<2);  // analog mode for PA 1
+GPIOA->MODER |= (3<<8);  // analog mode for PA 4
+```
