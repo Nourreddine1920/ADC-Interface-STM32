@@ -1,4 +1,4 @@
-## ADC INTERFACE USING STM32 WITH REGISTERS 
+## ADC INTERFACE USING STM32 WITH REGISTERS WITH DMA 
 
 ADC interface with DMA with STM32 using registers .
 - I am choosing ADC for this tutorial because the conversion of these values will take place in the background, without affecting the CPU, and whenever we need the ADC value for some processing, we can just take it from the buffer.
