@@ -188,3 +188,61 @@ ADC1->SR = 0;        // clear the status register
 ADC1->CR2 |= (1<<30);  // start the conversion
 ```
 
+### 👉DMA Configuration
+
+> DMA Configuration is split into 2 parts.
+
+📌 First we will initialize the DMA. This part will remain common for anything that we are going to use the DMA with.
+and after that we will configure the DMA. This part will change based on some parameters.
+
+#### 👉Initialize the DMA
+
+Here are the Steps for Initializing the DMA
+
+1. Enable the DMA Clock :
+
+> F446RE have 2 DMAs, DMA1 and DMA2. I am using DMA2 here, and I will explain the reason in a while. The DMA2 clock can be enabled in the RCC AHB1ENR Register
+```
+RCC->AHB1ENR |= (1<<22);  // DMA2EN = 1
+```
+
+2.  Configure the Configuration Register : 
+
+> There are a lot of things to be configured in the configuration Register. These are The Data Direction, The Circular Mode, Peripheral and memory increment modes, The data size, channel selection, etc.
+
+> Before doing any of this, we need to find out which DMA and what channel/stream that we are going to use. This information is provided in the DMA section of the reference manual itself.
+
+
+![Screenshot](images/DMA.png)
+
+
+```
+// Select the Data Direction
+DMA2_Stream0->CR &= ~(3<<6);  // Peripheral to memory
+	
+// Select Circular mode
+DMA2_Stream0->CR |= (1<<8);  // CIRC = 1
+	
+// Enable Memory Address Increment
+DMA2_Stream0->CR |= (1<<10);  // MINC = 1;
+
+// Set the size for data 
+DMA2_Stream0->CR |= (1<<11)|(1<<13);  // PSIZE = 01, MSIZE = 01, 16 bit data
+	
+// Select channel for the stream
+DMA2_Stream0->CR &= ~(7<<25);  // Channel 0 selected
+```
+
+📌 Below is the Picture of the DMA CONFIGURATION REGISTER 
+
+
+![Screenshot](images/DMA-CONF.png)
+
+
+- Since we are transferring the data from ADC (Peripheral) to Buffer (Memory), the data direction needs to be Peripheral to Memory.
+- CIRC Bit must be one, since we are using the circular mode for the DMA. This will make the DMA to continuously request the converted data from the ADC.
+- We will enable the Memory Increment. This will increment the address of the memory after the transfer of each data.
+- Peripheral Increment must be disabled, because we always want to copy the data from the Data Register of the ADC.
+- The data Size is selected as 16 bit wide. This is because I am using ADC in 12 bit mode here, and that’s why the data size should be more than this.
+- And at last we will select the channel for the DMA. I am using Channel 0, because that’s where the ADC1 is connected to.
+
