@@ -246,3 +246,60 @@ DMA2_Stream0->CR &= ~(7<<25);  // Channel 0 selected
 - The data Size is selected as 16 bit wide. This is because I am using ADC in 12 bit mode here, and that’s why the data size should be more than this.
 - And at last we will select the channel for the DMA. I am using Channel 0, because that’s where the ADC1 is connected to.
 
+#### 👉CONFIGURE THE DMA
+
+
+> The configuration depends on things like which peripheral are we using, where in the memory are we saving the data, and how much is the data size. 
+This changes according to your setup.
+
+```
+DMA2_Stream0->NDTR = size;   // Set the size of the transfer
+	
+DMA2_Stream0->PAR = srcAdd;  // Source address is peripheral address
+	
+DMA2_Stream0->M0AR = destAdd;  // Destination Address is memory address
+	
+// Enable the DMA Stream
+DMA2_Stream0->CR |= (1<<0);  // EN =1
+```
+- Here we will first set the Size in the NDTR Register. This is basically the number of data items, that we want transfer using the DMA.
+- After each transfer, this value decreases. And once it reaches 0, the data transfer will stop.
+- In case of circular mode, it never reaches 0, as it gets updated again.
+- PAR Register is used to store the address of the Peripheral Register, which will be involved in the data transfer. In our case it’s the source, so we will pass the source address here. This you will see in a while
+- M0AR Register is used to store the address of the Memory, which will be involved in the data transfer. In our case it’s the Destination, so we will pass the destination address here.
+- After all the setup is finished, we will finally enable the DMA.
+
+
+
+## MAIN CODE 
+```
+int main ()
+{
+	SysClockConfig ();
+	TIM6Config ();
+	
+	ADC_Init ();
+	ADC_Enable ();
+	DMA_Init ();
+	
+	DMA_Config ((uint32_t ) &ADC1->DR, (uint32_t) RxData, 2);
+	
+	ADC_Start ();
+	
+	while (1)
+	{
+		
+
+        }	
+}
+```
+
+- Here we will initialize the ADC and DMA first.
+In the DMA Configuration, the source address the the address of the data register of ADC1
+- The Destination address is the address of the RxData buffer.
+- Since we are converting 2 channels, the size (NDTR Value) will be 2.
+> This conversion will keep happening in the background, and we will always get the latest values in the buffer. We can use these values at any point in our program to do the further calculations.
+
+
+
+ 
