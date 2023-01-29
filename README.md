@@ -213,7 +213,7 @@ RCC->AHB1ENR |= (1<<22);  // DMA2EN = 1
 > Before doing any of this, we need to find out which DMA and what channel/stream that we are going to use. This information is provided in the DMA section of the reference manual itself.
 
 
-![Screenshot](images/DMA.png)
+![Screenshot](images/DMA.PNG)
 
 
 ```
@@ -236,7 +236,7 @@ DMA2_Stream0->CR &= ~(7<<25);  // Channel 0 selected
 📌 Below is the Picture of the DMA CONFIGURATION REGISTER 
 
 
-![Screenshot](images/DMA-CONF.png)
+![Screenshot](images/DMA-CONF.PNG)
 
 
 - Since we are transferring the data from ADC (Peripheral) to Buffer (Memory), the data direction needs to be Peripheral to Memory.
